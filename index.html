@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang web của tôi</title>
+    <style>
+        /* PHẦN CSS: Trang trí cho thanh phát nhạc đẹp mắt */
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .custom-audio-player {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            width: 320px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+        }
+
+        .play-btn {
+            background: white;
+            color: #764ba2;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: #f0f0f0;
+        }
+
+        .player-info {
+            margin-left: 15px;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .song-title {
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            height: 6px;
+            width: 100%;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #fff;
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Xin chào! Chào mừng đến với trang web của tôi 🎉</h1>
+    <p>Trang web này hiện đã có cả thanh phát nhạc tùy chỉnh bên dưới:</p>
+
+    <!-- PHẦN HTML: Khung giao diện phát nhạc -->
+    <div class="custom-audio-player">
+        <audio id="myAudio" src="audio/nhac-nen.mp3"></audio>
+        <button id="playBtn" class="play-btn" onclick="togglePlay()">▶</button>
+        <div class="player-info">
+            <span class="song-title">Nhạc nền Website</span>
+            <div class="progress-container" id="progressContainer" onclick="setProgress(event)">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* PHẦN JAVASCRIPT: Điều khiển nhạc chạy, tua và đổi nút bấm */
+        const audio = document.getElementById("myAudio");
+        const playBtn = document.getElementById("playBtn");
+        const progressBar = document.getElementById("progressBar");
+        const progressContainer = document.getElementById("progressContainer");
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = "⏸";
+            } else {
+                audio.pause();
+                playBtn.textContent = "▶";
+            }
+        }
+
+        audio.addEventListener("timeupdate", () => {
+            const { currentTime, duration } = audio;
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+        });
+
+        function setProgress(e) {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+
+        audio.addEventListener("ended", () => {
+            playBtn.textContent = "▶";
+            progressBar.style.width = "0%";
+        });
+    </script>
+
+</body>
+</html>
